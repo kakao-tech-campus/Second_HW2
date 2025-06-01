@@ -34,25 +34,16 @@
 
 ---
 
-## Comment
-
-| Method | Endpoint                                | Description                 | Parameters | Request Body | Response | Status Code |
-|--------|-----------------------------------------|-----------------------------|------------|--------------|----------|-------------|
-| POST   | /schedules/{scheduleId}/comments        | 댓글 생성                   | Path: scheduleId (Long)<br>Session: LOGIN_USER (Long) | `{ "content": string }` | `{ "id": long, "userId": long, "scheduleId": long, "content": string, "createdAt": string, "updatedAt": string }` | 200 OK |
-| GET    | /schedules/{scheduleId}/comments        | 특정 일정에 속한 댓글 목록 조회 | Path: scheduleId (Long) | 없음 | `[ { "id": long, "userId": long, "scheduleId": long, "content": string, "createdAt": string, "updatedAt": string }, ... ]` | 200 OK |
-| GET    | /comments/{id}                          | 단일 댓글 조회              | Path: id (Long) | 없음 | `{ "id": long, "userId": long, "scheduleId": long, "content": string, "createdAt": string, "updatedAt": string }` | 200 OK |
-| PUT    | /comments/{id}                          | 댓글 수정                   | Path: id (Long)<br>Session: LOGIN_USER (Long) | `{ "content": string }` | `{ "id": long, "userId": long, "scheduleId": long, "content": string, "createdAt": string, "updatedAt": string }` | 200 OK |
-| DELETE | /comments/{id}                          | 댓글 삭제                   | Path: id (Long)<br>Session: LOGIN_USER (Long) | 없음 | 없음 | 200 OK |
-
----
-
 > **참고**
 > - `Session: LOGIN_USER (Long)`: 로그인된 사용자의 ID가 세션에 저장되어 있다는 의미입니다.
 > - `Page<...>`: 페이징 처리된 결과를 의미합니다.
 > - 각 엔드포인트의 Request/Response는 JSON 포맷입니다.
 
+
 # ERD 설계
-![스크린샷 2025-05-25 235646](https://github.com/user-attachments/assets/3ee3102a-531f-4135-8991-17f1ce72f2c8)
+![스크린샷 2025-06-01 204830](https://github.com/user-attachments/assets/cb361abc-1911-44ed-bcf9-c8906f948ed6)
+
+
 
 # DB
 ## 📊 데이터베이스 테이블 정의
@@ -78,14 +69,3 @@ CREATE TABLE schedules (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-comments 테이블
-CREATE TABLE comments (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  content VARCHAR(255) NOT NULL,
-  schedule_id BIGINT NOT NULL,
-  user_id BIGINT NOT NULL,
-  created_at TIMESTAMP,
-  updated_at TIMESTAMP,
-  FOREIGN KEY (schedule_id) REFERENCES schedules(id),
-  FOREIGN KEY (user_id) REFERENCES users(id)
-);
